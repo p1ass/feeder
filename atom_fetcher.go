@@ -14,8 +14,8 @@ type atomFetcher struct {
 	URL string
 }
 
-//NewFeedFetcher is ...
-func NewFeedFetcher(url string) Fetcher {
+//NewAtomFetcher is ...
+func NewAtomFetcher(url string) Fetcher {
 	return &atomFetcher{URL: url}
 }
 

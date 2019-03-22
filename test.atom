@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><feed xmlns="http://www.w3.org/2005/Atom">
+    <title>title</title>
+    <id>id</id>
+    <updated>2019-01-01T00:00:00Z</updated>
+    <subtitle>subtitle</subtitle>
+    <link href="http://example.com"></link>
+    <author>
+        <name>name</name>
+        <email>email@example.com</email>
+    </author>
+    <entry>
+        <title>title</title>
+        <published>2019-01-01T00:00:00+09:00</published>
+        <updated>2019-01-02T00:00:00+09:00</updated>
+        <id>id</id>
+        <link href="http://example.com" rel="alternate"></link>
+        <link href="http://example.com/image.png" rel="enclosure" type="image/png" length="0"></link>
+        <summary type="html">summary_content</summary>
+        <content type="html">content</content>
+        <author>
+            <name>name</name>
+            <email>email@example.com</email>
+        </author>
+    </entry>
+</feed>
