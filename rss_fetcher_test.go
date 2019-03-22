@@ -11,7 +11,7 @@ import (
 
 func TestRSSFetch(t *testing.T) {
 	// Set up mock server
-	xmlFile, err := os.Open("test_rss.xml")
+	xmlFile, err := os.Open("rss_test.xml")
 	if err != nil {
 		t.Fatal("Failed to open test rss feed file.")
 	}
