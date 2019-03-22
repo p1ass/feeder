@@ -36,7 +36,7 @@ func (cli *atomFetcher) Fetch() (*Items, error) {
 	items := []*Item{}
 
 	for _, e := range atom.Entries {
-		item, err := convertEntryToItem(e)
+		item, err := convertAtomEntryToItem(e)
 		if err != nil {
 			return nil, errors.Wrap(err, "Failed to convert RSSItem to Item.")
 		}
@@ -45,7 +45,7 @@ func (cli *atomFetcher) Fetch() (*Items, error) {
 	return &Items{items}, nil
 }
 
-func convertEntryToItem(e *feeds.AtomEntry) (*Item, error) {
+func convertAtomEntryToItem(e *feeds.AtomEntry) (*Item, error) {
 	p, err := time.Parse(time.RFC3339, e.Published)
 	if err != nil {
 		return nil, errors.Wrap(err, fmt.Sprintf("Failed to parse published time. published=%v", e.Published))
