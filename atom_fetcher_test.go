@@ -11,7 +11,7 @@ import (
 
 func TestAtomFetch(t *testing.T) {
 	// Set up mock server
-	xmlFile, err := os.Open("test.atom")
+	xmlFile, err := os.Open("test_atom.xml")
 	if err != nil {
 		t.Fatal("Failed to open test atom feed file.")
 	}
