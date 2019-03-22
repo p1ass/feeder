@@ -54,8 +54,7 @@ func convertRssItemToItem(i *feeds.RssItem) (*Item, error) {
 		Link:        &Link{Href: i.Link},
 		Description: i.Description,
 		Id:          i.Guid,
-		Created:     t,
-		Source:      &Link{Href: i.Source},
+		Created:     &t,
 	}
 
 	if i.Author != "" {

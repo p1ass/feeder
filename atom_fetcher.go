@@ -59,8 +59,8 @@ func convertAtomEntryToItem(e *feeds.AtomEntry) (*Item, error) {
 		Title:       e.Title,
 		Description: e.Summary.Content,
 		Id:          e.Id,
-		Created:     p,
-		Updated:     u,
+		Created:     &p,
+		Updated:     &u,
 	}
 
 	var name, email string

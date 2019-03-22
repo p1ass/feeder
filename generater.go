@@ -55,8 +55,8 @@ func (i *Item) convert() *feeds.Item {
 		i.Author.convert(),
 		i.Description,
 		i.Id,
-		i.Updated,
-		i.Created,
+		*i.Updated,
+		*i.Created,
 		i.Enclosure.convert(),
 		i.Content,
 	}

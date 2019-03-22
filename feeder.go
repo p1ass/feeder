@@ -31,8 +31,8 @@ type Item struct {
 	Author      *Author
 	Description string
 	Id          string
-	Updated     time.Time
-	Created     time.Time
+	Updated     *time.Time
+	Created     *time.Time
 	Enclosure   *Enclosure
 	Content     string
 }

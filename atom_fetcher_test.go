@@ -42,8 +42,8 @@ func TestAtomFetch(t *testing.T) {
 			},
 			Description: "summary_content",
 			Id:          "id",
-			Updated:     updated,
-			Created:     published,
+			Updated:     &updated,
+			Created:     &published,
 			Enclosure: &Enclosure{
 				Url:    "http://example.com/image.png",
 				Type:   "image/png",

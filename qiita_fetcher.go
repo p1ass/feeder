@@ -54,7 +54,7 @@ func convertQiitaToItem(q *qiitaResponse) *Item {
 	i := &Item{
 		Title:       q.Title,
 		Link:        &Link{Href: q.URL},
-		Created:     *q.CreatedAt,
+		Created:     q.CreatedAt,
 		Id:          q.ID,
 		Description: utf8string.NewString(q.Body).Slice(0, 200),
 	}
