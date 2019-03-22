@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+  <channel>
+    <title>title</title>
+    <link>http://example.com</link>
+    <description>subtitle</description>
+    <lastBuildDate>Tue, 01 Jan 2019 00:200:00 +0900</lastBuildDate>
+        <item>
+            <title>title</title>
+            <link>http://example.com</link>
+            <description>summary_content</description>
+            <pubDate>Tue, 01 Jan 2019 00:00:00 +0900</pubDate>
+            <guid isPermalink="false">id</guid>
+            <author>name</author>
+            <enclosure url="http://example.com/image.png" type="image/png" length="0" />
+        </item>
+  </channel>
+</rss>
