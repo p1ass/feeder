@@ -74,6 +74,10 @@ func convertAtomEntryToItem(e *feeds.AtomEntry) (*Item, error) {
 		}
 	}
 
+	if e.Content != nil {
+		i.Content = e.Content.Content
+	}
+
 	for _, link := range e.Links {
 		if link.Rel == "enclosure" {
 			i.Enclosure = &Enclosure{
