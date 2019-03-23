@@ -65,7 +65,7 @@ func (i *Item) convert() *feeds.Item {
 func (items *Items) convert() []*feeds.Item {
 	convertedItems := []*feeds.Item{}
 
-	for _, i := range items.items {
+	for _, i := range items.Items {
 		convertedItems = append(convertedItems, i.convert())
 	}
 	return convertedItems

@@ -34,15 +34,16 @@ type Item struct {
 	Source      *Link
 	Author      *Author
 	Description string
-	Id          string
-	Updated     *time.Time
-	Created     *time.Time
-	Enclosure   *Enclosure
-	Content     string
+
+	Id        string
+	Updated   *time.Time
+	Created   *time.Time
+	Enclosure *Enclosure
+	Content   string
 }
 
 type Items struct {
-	items []*Item
+	Items []*Item
 }
 
 type Feed struct {
@@ -60,7 +61,7 @@ type Feed struct {
 }
 
 func (items *Items) Add(i *Items) {
-	items.items = append(items.items, i.items...)
+	items.Items = append(items.Items, i.Items...)
 }
 
 func Crawl(fetchers ...Fetcher) *Items {
