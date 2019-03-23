@@ -2,7 +2,6 @@ package feeder
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/pkg/errors"
 	"golang.org/x/exp/utf8string"
 	"log"
@@ -16,21 +15,26 @@ type qiitaResponse struct {
 	URL       string     `json:"url"`
 	Body      string     `json:"body"`
 	ID        string     `json:"id"`
+	User      *qiitaUser `json:"user"`
+}
+
+type qiitaUser struct {
+	ID string `json:"id"`
 }
 
 // QiitaFetcher is ...
 type qiitaFetcher struct {
-	UserName string
+	URL string
 }
 
 //NewQiitaFetcher is ...
-func NewQiitaFetcher(userName string) Fetcher {
-	return &qiitaFetcher{UserName: userName}
+func NewQiitaFetcher(url string) Fetcher {
+	return &qiitaFetcher{URL: url}
 }
 
 // Fetch is ...
 func (cli *qiitaFetcher) Fetch() (*Items, error) {
-	resp, err := http.Get(fmt.Sprintf("https://qiita.com/api/v2/users/%s/items", cli.UserName))
+	resp, err := http.Get(cli.URL)
 	if err != nil {
 		log.Fatal(err)
 		return nil, errors.Wrap(err, "Failed to get response from qiita.")
@@ -51,12 +55,24 @@ func (cli *qiitaFetcher) Fetch() (*Items, error) {
 }
 
 func convertQiitaToItem(q *qiitaResponse) *Item {
+	length := utf8string.NewString(q.Body).RuneCount()
+	maxLength := 200
+	if length < 200 {
+		maxLength = length
+	}
+
 	i := &Item{
 		Title:       q.Title,
 		Link:        &Link{Href: q.URL},
 		Created:     q.CreatedAt,
 		Id:          q.ID,
-		Description: utf8string.NewString(q.Body).Slice(0, 200),
+		Description: utf8string.NewString(q.Body).Slice(0, maxLength),
+	}
+
+	if q.User != nil {
+		i.Author = &Author{
+			Name: q.User.ID,
+		}
 	}
 	return i
 }

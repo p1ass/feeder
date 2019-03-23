@@ -81,6 +81,5 @@ func (feed *Feed) Crawl(fetchers ...Fetcher) {
 			wg.Done()
 		}()
 	}
-
 	wg.Wait()
 }
