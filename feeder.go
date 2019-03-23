@@ -63,7 +63,8 @@ func (items *Items) Add(i *Items) {
 	items.items = append(items.items, i.items...)
 }
 
-func (feed *Feed) Crawl(fetchers ...Fetcher) {
+func Crawl(fetchers ...Fetcher) *Items {
+	items := &Items{}
 	mutex := sync.Mutex{}
 	wg := sync.WaitGroup{}
 
@@ -75,11 +76,13 @@ func (feed *Feed) Crawl(fetchers ...Fetcher) {
 				log.Fatal(err)
 			} else {
 				mutex.Lock()
-				feed.Items.Add(i)
+				items.Add(i)
 				mutex.Unlock()
 			}
 			wg.Done()
 		}()
 	}
 	wg.Wait()
+
+	return items
 }

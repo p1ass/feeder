@@ -53,13 +53,12 @@ func TestCrawl(t *testing.T) {
 	}
 	expected := &Items{[]*Item{item, item}}
 
-	feed := &Feed{}
 	fetcher1 := &mockFetcher{}
 	fetcher2 := &mockFetcher{}
-	feed.Crawl(fetcher1, fetcher2)
+	items := Crawl(fetcher1, fetcher2)
 
-	if !reflect.DeepEqual(*expected, feed.Items) {
-		diffs := pretty.Diff(*expected, feed.Items)
+	if !reflect.DeepEqual(*expected, *items) {
+		diffs := pretty.Diff(*expected, *items)
 		t.Log(pretty.Println(diffs))
 		t.Error("Crawl does not match.")
 
