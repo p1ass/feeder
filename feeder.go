@@ -1,6 +1,10 @@
 package feeder
 
-import "time"
+import (
+	"log"
+	"sync"
+	"time"
+)
 
 // Fetcher is ...
 type Fetcher interface {
@@ -53,4 +57,30 @@ type Feed struct {
 	Items       Items
 	Copyright   string
 	Image       *Image
+}
+
+func (items *Items) Add(i *Items) {
+	items.items = append(items.items, i.items...)
+}
+
+func (feed *Feed) Crawl(fetchers ...Fetcher) {
+	mutex := sync.Mutex{}
+	wg := sync.WaitGroup{}
+
+	for _, f := range fetchers {
+		wg.Add(1)
+		go func() {
+			i, err := f.Fetch()
+			if err != nil {
+				log.Fatal(err)
+			} else {
+				mutex.Lock()
+				feed.Items.Add(i)
+				mutex.Unlock()
+			}
+			wg.Done()
+		}()
+	}
+
+	wg.Wait()
 }
