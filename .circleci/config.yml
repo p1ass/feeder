@@ -1,0 +1,51 @@
+version: 2.1
+
+executors:
+    go:
+        docker:
+            - image: circleci/golang:1.11.6
+              environment:
+                  GO111MODULE: 'on'
+
+commands:
+    restore_module:
+        steps:
+            - restore_cache:
+                  name: Restore go modules cache
+                  keys:
+                      - mod-{{ checksum "go.mod" }}
+
+    save_module:
+        steps:
+            - save_cache:
+                  name: Save go modules cache
+                  key: mod-{{ checksum "go.mod" }}
+                  paths:
+                      - /go/pkg/mod/cache
+
+    vendoring:
+        steps:
+            - run:
+                  name: Vendoring
+                  command: go mod download
+
+    test:
+        steps:
+            - run:
+                  name: Run test
+                  command: go test -v
+
+jobs:
+    build:
+        executor: go
+        steps:
+            - checkout
+            - restore_module
+            - vendoring
+            - save_module
+            - test
+
+workflows:
+    test:
+        jobs:
+            - build
