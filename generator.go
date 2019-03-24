@@ -48,18 +48,36 @@ func (e *Enclosure) convert() *feeds.Enclosure {
 }
 
 func (i *Item) convert() *feeds.Item {
-	return &feeds.Item{
-		i.Title,
-		i.Link.convert(),
-		i.Source.convert(),
-		i.Author.convert(),
-		i.Description,
-		i.Id,
-		*i.Updated,
-		*i.Created,
-		i.Enclosure.convert(),
-		i.Content,
+	feedsItem := &feeds.Item{
+		Title:       i.Title,
+		Description: i.Description,
+		Id:          i.Id,
+		Content:     i.Content,
 	}
+
+	if i.Link != nil {
+		feedsItem.Link = i.Link.convert()
+	}
+	if i.Updated != nil {
+		feedsItem.Updated = *i.Updated
+	}
+	if i.Created != nil {
+		feedsItem.Created = *i.Created
+	}
+
+	if i.Source != nil {
+		feedsItem.Source = i.Source.convert()
+	}
+
+	if i.Author != nil {
+		feedsItem.Author = i.Author.convert()
+	}
+
+	if i.Enclosure != nil {
+		feedsItem.Enclosure = i.Enclosure.convert()
+	}
+
+	return feedsItem
 }
 
 func (items *Items) convert() []*feeds.Item {
@@ -72,17 +90,27 @@ func (items *Items) convert() []*feeds.Item {
 }
 
 func (f *Feed) convert() *feeds.Feed {
-	return &feeds.Feed{
-		f.Title,
-		f.Link.convert(),
-		f.Description,
-		f.Author.convert(),
-		f.Updated,
-		f.Created,
-		f.Id,
-		f.Subtitle,
-		f.Items.convert(),
-		f.Copyright,
-		f.Image.convert(),
+	feed := &feeds.Feed{
+		Title:       f.Title,
+		Description: f.Description,
+		Updated:     f.Updated,
+		Created:     f.Created,
+		Id:          f.Id,
+		Subtitle:    f.Subtitle,
+		Copyright:   f.Copyright,
 	}
+
+	if f.Link != nil {
+		feed.Link = f.Link.convert()
+	}
+
+	if f.Author != nil {
+		feed.Author = f.Author.convert()
+	}
+
+	if f.Image != nil {
+		feed.Image = f.Image.convert()
+	}
+
+	return feed
 }
