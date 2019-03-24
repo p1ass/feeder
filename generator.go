@@ -97,6 +97,7 @@ func (f *Feed) convert() *feeds.Feed {
 		Created:     f.Created,
 		Id:          f.Id,
 		Subtitle:    f.Subtitle,
+		Items:       f.Items.convert(),
 		Copyright:   f.Copyright,
 	}
 
