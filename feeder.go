@@ -71,7 +71,7 @@ func Crawl(fetchers ...Fetcher) *Items {
 
 	for _, f := range fetchers {
 		wg.Add(1)
-		go func() {
+		go func(f Fetcher) {
 			i, err := f.Fetch()
 			if err != nil {
 				log.Fatal(err)
@@ -81,7 +81,7 @@ func Crawl(fetchers ...Fetcher) *Items {
 				mutex.Unlock()
 			}
 			wg.Done()
-		}()
+		}(f)
 	}
 	wg.Wait()
 
