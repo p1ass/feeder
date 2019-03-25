@@ -1,6 +1,6 @@
 # naoki-kishi/feeder
 
-`naoki-kishi/feeder` is a generator of RSS or JSON feeds combining multiple RSS, Atom, Qiita, and so on.
+`naoki-kishi/feeder` is a RSS or JSON feeds generator from multiple RSS, Atom, Qiita, and so on
 
 ## Getting started
 
