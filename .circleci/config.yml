@@ -44,8 +44,3 @@ jobs:
             - vendoring
             - save_module
             - test
-
-workflows:
-    test:
-        jobs:
-            - build
