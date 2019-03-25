@@ -18,8 +18,8 @@ func NewRSSFetcher(url string) Fetcher {
 	return &rssFetcher{URL: url}
 }
 
-func (cli *rssFetcher) Fetch() (*Items, error) {
-	resp, err := http.Get(cli.URL)
+func (fetcher *rssFetcher) Fetch() (*Items, error) {
+	resp, err := http.Get(fetcher.URL)
 	if err != nil {
 		log.Fatal(err)
 		return nil, errors.Wrap(err, "Failed to get response from rss.")

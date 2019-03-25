@@ -33,8 +33,8 @@ func NewQiitaFetcher(url string) Fetcher {
 }
 
 // Fetch is ...
-func (cli *qiitaFetcher) Fetch() (*Items, error) {
-	resp, err := http.Get(cli.URL)
+func (fetcher *qiitaFetcher) Fetch() (*Items, error) {
+	resp, err := http.Get(fetcher.URL)
 	if err != nil {
 		log.Fatal(err)
 		return nil, errors.Wrap(err, "Failed to get response from qiita.")

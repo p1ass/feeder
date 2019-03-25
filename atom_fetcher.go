@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/naoki-kishi/feeds"
 	"github.com/pkg/errors"
-	"log"
 	"net/http"
 	"time"
 )
@@ -20,10 +19,9 @@ func NewAtomFetcher(url string) Fetcher {
 }
 
 // Fetch is ...
-func (cli *atomFetcher) Fetch() (*Items, error) {
-	resp, err := http.Get(cli.URL)
+func (fetcher *atomFetcher) Fetch() (*Items, error) {
+	resp, err := http.Get(fetcher.URL)
 	if err != nil {
-		log.Fatal(err)
 		return nil, errors.Wrap(err, "Failed to get response from rss.")
 	}
 

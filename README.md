@@ -6,7 +6,7 @@
 
 ### Install
 ```bash
-go get -u  github.com/naoki-kishi/feeder
+go get -u github.com/naoki-kishi/feeder
 ```
 
 ### Examples
@@ -70,8 +70,8 @@ type qiitaFetcher struct {
 	URL string
 }
 
-func (cli *qiitaFetcher) Fetch() (*feeder.Items, error) {
-	resp, err := http.Get(cli.URL)
+func (fetcher *qiitaFetcher) Fetch() (*feeder.Items, error) {
+	resp, err := http.Get(fetcher.URL)
 	if err != nil {
 		log.Fatal(err)
 		return nil, errors.Wrap(err, "Failed to get response from qiita.")
