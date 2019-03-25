@@ -70,7 +70,7 @@ type qiitaFetcher struct {
 	URL string
 }
 
-func (cli *qiitaFetcher) Fetch() (*Items, error) {
+func (cli *qiitaFetcher) Fetch() (*feeder.Items, error) {
 	resp, err := http.Get(cli.URL)
 	if err != nil {
 		log.Fatal(err)
@@ -83,30 +83,30 @@ func (cli *qiitaFetcher) Fetch() (*Items, error) {
 		return nil, errors.Wrap(err, "Failed to decode response body.")
 	}
 
-	items := []*Item{}
+	items := []*feeder.Item{}
 	for _, i := range qiita {
 		items = append(items, convertQiitaToItem(i))
 	}
-	return &Items{items}, nil
+	return &feeder.Items{items}, nil
 }
 
-func convertQiitaToItem(q *qiitaResponse) *Item {
+func convertQiitaToItem(q *qiitaResponse) *feeder.Item {
 	length := utf8string.NewString(q.Body).RuneCount()
 	maxLength := 200
 	if length < 200 {
 		maxLength = length
 	}
 
-	i := &Item{
+	i := &feeder.Item{
 		Title:       q.Title,
-		Link:        &Link{Href: q.URL},
+		Link:        &feeder.Link{Href: q.URL},
 		Created:     q.CreatedAt,
 		Id:          q.ID,
 		Description: utf8string.NewString(q.Body).Slice(0, maxLength),
 	}
 
 	if q.User != nil {
-		i.Author = &Author{
+		i.Author = &feeder.Author{
 			Name: q.User.ID,
 		}
 	}
