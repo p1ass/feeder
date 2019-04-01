@@ -1,7 +1,7 @@
 package feeder
 
 import (
-	"github.com/frozzare/go-ogp"
+	ogp "github.com/otiai10/opengraph"
 	"log"
 	"sync"
 	"time"
@@ -99,19 +99,24 @@ func fetchOGP(items *Items) *Items {
 		i := i
 		go func() {
 			if i.Enclosure == nil || i.Enclosure.Url == "" {
-				list := ogp.Fetch(i.Link.Href)
+				og, err := ogp.Fetch(i.Link.Href)
+				if err != nil {
+					log.Printf("Failed to fetch ogp. %#v", err)
+				}
 
-				if ogpLink, ok := list["image"]; ok {
+				if len(og.Image) > 0 {
+					image := og.Image[0]
 					i.Enclosure = &Enclosure{}
-					i.Enclosure.Url = ogpLink.(string)
+					i.Enclosure.Url = image.URL
 
-					if imageType, ok := list["image:type"]; ok {
-						i.Enclosure.Type = imageType.(string)
+					if image.Type != "" {
+						i.Enclosure.Type = image.Type
 					} else {
 						i.Enclosure.Type = "image/png"
 					}
 					i.Enclosure.Length = "0"
 				}
+
 			}
 			wg.Done()
 		}()
