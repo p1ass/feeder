@@ -24,6 +24,7 @@ func (fetcher *atomFetcher) Fetch() (*Items, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "Failed to get response from rss.")
 	}
+	defer resp.Body.Close()
 
 	var atom feeds.AtomFeed
 	err = xml.NewDecoder(resp.Body).Decode(&atom)

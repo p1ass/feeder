@@ -24,6 +24,7 @@ func (fetcher *rssFetcher) Fetch() (*Items, error) {
 		log.Fatal(err)
 		return nil, errors.Wrap(err, "Failed to get response from rss.")
 	}
+	defer resp.Body.Close()
 
 	var rss feeds.RssFeedXml
 	err = xml.NewDecoder(resp.Body).Decode(&rss)
