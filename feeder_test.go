@@ -1,7 +1,8 @@
-package feeder
+package feeder_test
 
 import (
 	"github.com/kr/pretty"
+	"github.com/naoki-kishi/feeder"
 	"reflect"
 	"strconv"
 	"testing"
@@ -12,20 +13,20 @@ type mockFetcher struct {
 	Id string
 }
 
-func (f *mockFetcher) Fetch() (*Items, error) {
+func (f *mockFetcher) Fetch() (*feeder.Items, error) {
 	sleepTime, _ := strconv.Atoi(f.Id)
 	time.Sleep(time.Second * time.Duration(sleepTime))
 
 	publishedString := "2019-01-01T00:00:00+09:00"
 	published, _ := time.Parse(time.RFC3339, publishedString)
-	return &Items{[]*Item{{
+	return &feeder.Items{[]*feeder.Item{{
 		Title: "title",
-		Link: &Link{
+		Link: &feeder.Link{
 			Href: "http://example.com",
 			Rel:  "",
 		},
 		Source: nil,
-		Author: &Author{
+		Author: &feeder.Author{
 			Name: "name",
 		},
 		Description: "summary_content",
@@ -40,14 +41,14 @@ func TestCrawl(t *testing.T) {
 	publishedString := "2019-01-01T00:00:00+09:00"
 	published, _ := time.Parse(time.RFC3339, publishedString)
 
-	expected := &Items{[]*Item{{
+	expected := &feeder.Items{[]*feeder.Item{{
 		Title: "title",
-		Link: &Link{
+		Link: &feeder.Link{
 			Href: "http://example.com",
 			Rel:  "",
 		},
 		Source: nil,
-		Author: &Author{
+		Author: &feeder.Author{
 			Name: "name",
 		},
 		Description: "summary_content",
@@ -55,14 +56,14 @@ func TestCrawl(t *testing.T) {
 		Updated:     nil,
 		Created:     &published,
 		Content:     "",
-	}, &Item{
+	}, &feeder.Item{
 		Title: "title",
-		Link: &Link{
+		Link: &feeder.Link{
 			Href: "http://example.com",
 			Rel:  "",
 		},
 		Source: nil,
-		Author: &Author{
+		Author: &feeder.Author{
 			Name: "name",
 		},
 		Description: "summary_content",
@@ -74,7 +75,7 @@ func TestCrawl(t *testing.T) {
 
 	fetcher1 := &mockFetcher{Id: "1"}
 	fetcher2 := &mockFetcher{Id: "2"}
-	items := Crawl(fetcher1, fetcher2)
+	items := feeder.Crawl(fetcher1, fetcher2)
 
 	if !reflect.DeepEqual(*expected, *items) {
 		diffs := pretty.Diff(*expected, *items)

@@ -6,14 +6,14 @@ import (
 	"net/http/httptest"
 )
 
-type response struct {
-	path, query, contentType, body string
+type Response struct {
+	Path, Query, ContentType, Body string
 }
 
-func newMockServer(response *response) *httptest.Server {
+func NewMockServer(response *Response) *httptest.Server {
 	handler := func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", response.contentType)
-		_, err := io.WriteString(w, response.body)
+		w.Header().Set("Content-Type", response.ContentType)
+		_, err := io.WriteString(w, response.Body)
 		if err != nil {
 			panic(err)
 		}

@@ -1,7 +1,8 @@
-package feeder
+package feeder_test
 
 import (
 	"github.com/kr/pretty"
+	"github.com/naoki-kishi/feeder"
 	"io/ioutil"
 	"os"
 	"reflect"
@@ -16,27 +17,27 @@ func TestAtomFetch(t *testing.T) {
 		t.Fatal("Failed to open test atom feed file.")
 	}
 	bytes, _ := ioutil.ReadAll(xmlFile)
-	response := &response{
-		path:        "/feed",
-		contentType: "application/xml",
-		body:        string(bytes),
+	response := &feeder.Response{
+		Path:        "/feed",
+		ContentType: "application/xml",
+		Body:        string(bytes),
 	}
-	server := newMockServer(response)
+	server := feeder.NewMockServer(response)
 	defer server.Close()
 
 	updatedString := "2019-01-02T00:00:00+09:00"
 	updated, _ := time.Parse(time.RFC3339, updatedString)
 	publishedString := "2019-01-01T00:00:00+09:00"
 	published, _ := time.Parse(time.RFC3339, publishedString)
-	expected := &Items{
-		[]*Item{{
+	expected := &feeder.Items{
+		[]*feeder.Item{{
 			Title: "title",
-			Link: &Link{
+			Link: &feeder.Link{
 				Href: "http://example.com",
 				Rel:  "alternate",
 			},
 			Source: nil,
-			Author: &Author{
+			Author: &feeder.Author{
 				Name:  "name",
 				Email: "email@example.com",
 			},
@@ -44,7 +45,7 @@ func TestAtomFetch(t *testing.T) {
 			Id:          "id",
 			Updated:     &updated,
 			Created:     &published,
-			Enclosure: &Enclosure{
+			Enclosure: &feeder.Enclosure{
 				Url:    "http://example.com/image.png",
 				Type:   "image/png",
 				Length: "0",
@@ -52,7 +53,7 @@ func TestAtomFetch(t *testing.T) {
 			Content: "content",
 		}}}
 
-	fetcher := NewAtomFetcher(server.URL + "/feed")
+	fetcher := feeder.NewAtomFetcher(server.URL + "/feed")
 	got, err := fetcher.Fetch()
 	if err != nil {
 		t.Fatal(err)
