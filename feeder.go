@@ -1,6 +1,7 @@
 package feeder
 
 import (
+	"github.com/frozzare/go-ogp"
 	"log"
 	"sync"
 	"time"
@@ -82,6 +83,38 @@ func Crawl(fetchers ...Fetcher) *Items {
 			}
 			wg.Done()
 		}(f)
+	}
+	wg.Wait()
+
+	fetchOGP(items)
+
+	return items
+}
+
+func fetchOGP(items *Items) *Items {
+	wg := sync.WaitGroup{}
+
+	for _, i := range items.Items {
+		wg.Add(1)
+		i := i
+		go func() {
+			if i.Enclosure == nil || i.Enclosure.Url == "" {
+				list := ogp.Fetch(i.Link.Href)
+
+				if ogpLink, ok := list["image"]; ok {
+					i.Enclosure = &Enclosure{}
+					i.Enclosure.Url = ogpLink.(string)
+
+					if imageType, ok := list["image:type"]; ok {
+						i.Enclosure.Type = imageType.(string)
+					} else {
+						i.Enclosure.Type = "image/png"
+					}
+					i.Enclosure.Length = "0"
+				}
+			}
+			wg.Done()
+		}()
 	}
 	wg.Wait()
 
