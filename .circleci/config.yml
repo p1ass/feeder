@@ -35,6 +35,18 @@ commands:
                   name: Run test
                   command: go test -v
 
+    calc-coverage:
+        steps:
+            - run:
+                  name : Calc converage
+                  command: go test ./... -covermode=count -coverprofile=c.out
+            - run:
+                  name : Export html report
+                  command: mkdir -p ./test_results && go tool cover -html=c.out -o ./test_results/coverage.html
+
+            - store_artifacts:
+                path: ./test_results
+                destination: prefix
 jobs:
     build:
         executor: go
@@ -44,3 +56,4 @@ jobs:
             - vendoring
             - save_module
             - test
+            - calc-coverage
