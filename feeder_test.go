@@ -22,7 +22,7 @@ func (f *mockFetcher) Fetch() (*feeder.Items, error) {
 	return &feeder.Items{[]*feeder.Item{{
 		Title: "title",
 		Link: &feeder.Link{
-			Href: "http://example.com",
+			Href: "http://ogp.me",
 			Rel:  "",
 		},
 		Source: nil,
@@ -44,7 +44,7 @@ func TestCrawl(t *testing.T) {
 	expected := &feeder.Items{[]*feeder.Item{{
 		Title: "title",
 		Link: &feeder.Link{
-			Href: "http://example.com",
+			Href: "http://ogp.me",
 			Rel:  "",
 		},
 		Source: nil,
@@ -55,11 +55,16 @@ func TestCrawl(t *testing.T) {
 		Id:          "1",
 		Updated:     nil,
 		Created:     &published,
-		Content:     "",
-	}, &feeder.Item{
+		Enclosure: &feeder.Enclosure{
+			Url:    "http://ogp.me/logo.png",
+			Type:   "image/png",
+			Length: "0",
+		},
+		Content: "",
+	}, {
 		Title: "title",
 		Link: &feeder.Link{
-			Href: "http://example.com",
+			Href: "http://ogp.me",
 			Rel:  "",
 		},
 		Source: nil,
@@ -70,7 +75,11 @@ func TestCrawl(t *testing.T) {
 		Id:          "2",
 		Updated:     nil,
 		Created:     &published,
-		Content:     "",
+		Enclosure: &feeder.Enclosure{
+			Url:    "http://ogp.me/logo.png",
+			Type:   "image/png",
+			Length: "0",
+		}, Content: "",
 	}}}
 
 	fetcher1 := &mockFetcher{Id: "1"}
