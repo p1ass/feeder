@@ -1,7 +1,8 @@
-package feeder
+package feeder_test
 
 import (
 	"github.com/kr/pretty"
+	"github.com/naoki-kishi/feeder"
 	"io/ioutil"
 	"os"
 	"reflect"
@@ -16,32 +17,32 @@ func TestRSSFetch(t *testing.T) {
 		t.Fatal("Failed to open test rss feed file.")
 	}
 	bytes, _ := ioutil.ReadAll(xmlFile)
-	response := &response{
-		path:        "/rss",
-		contentType: "application/xml",
-		body:        string(bytes),
+	response := &feeder.Response{
+		Path:        "/rss",
+		ContentType: "application/xml",
+		Body:        string(bytes),
 	}
-	server := newMockServer(response)
+	server := feeder.NewMockServer(response)
 	defer server.Close()
 
 	publishedString := "2019-01-01T00:00:00+09:00"
 	published, _ := time.Parse(time.RFC3339, publishedString)
-	expected := &Items{
-		[]*Item{{
+	expected := &feeder.Items{
+		[]*feeder.Item{{
 			Title: "title",
-			Link: &Link{
+			Link: &feeder.Link{
 				Href: "http://example.com",
 				Rel:  "",
 			},
 			Source: nil,
-			Author: &Author{
+			Author: &feeder.Author{
 				Name: "name",
 			},
 			Description: "summary_content",
 			Id:          "id",
 			Updated:     nil,
 			Created:     &published,
-			Enclosure: &Enclosure{
+			Enclosure: &feeder.Enclosure{
 				Url:    "http://example.com/image.png",
 				Type:   "image/png",
 				Length: "0",
@@ -49,7 +50,7 @@ func TestRSSFetch(t *testing.T) {
 			Content: "",
 		}}}
 
-	fetcher := NewRSSFetcher(server.URL + "/rss")
+	fetcher := feeder.NewRSSFetcher(server.URL + "/rss")
 	got, err := fetcher.Fetch()
 	if err != nil {
 		t.Fatal(err)

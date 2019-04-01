@@ -39,6 +39,7 @@ func (fetcher *qiitaFetcher) Fetch() (*Items, error) {
 		log.Fatal(err)
 		return nil, errors.Wrap(err, "Failed to get response from qiita.")
 	}
+	defer resp.Body.Close()
 
 	var qiita []*qiitaResponse
 	err = json.NewDecoder(resp.Body).Decode(&qiita)
