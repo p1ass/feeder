@@ -3,19 +3,18 @@ package feeder
 import (
 	"encoding/json"
 	"github.com/pkg/errors"
-	"golang.org/x/exp/utf8string"
 	"log"
 	"net/http"
 	"time"
 )
 
 type qiitaResponse struct {
-	CreatedAt *time.Time `json:"created_at"`
-	Title     string     `json:"title"`
-	URL       string     `json:"url"`
-	Body      string     `json:"body"`
-	ID        string     `json:"id"`
-	User      *qiitaUser `json:"user"`
+	CreatedAt    *time.Time `json:"created_at"`
+	Title        string     `json:"title"`
+	URL          string     `json:"url"`
+	RenderedBody string     `json:"rendered_body"`
+	ID           string     `json:"id"`
+	User         *qiitaUser `json:"user"`
 }
 
 type qiitaUser struct {
@@ -56,18 +55,12 @@ func (fetcher *qiitaFetcher) Fetch() (*Items, error) {
 }
 
 func convertQiitaToItem(q *qiitaResponse) *Item {
-	length := utf8string.NewString(q.Body).RuneCount()
-	maxLength := 200
-	if length < 200 {
-		maxLength = length
-	}
-
 	i := &Item{
 		Title:       q.Title,
 		Link:        &Link{Href: q.URL},
 		Created:     q.CreatedAt,
 		Id:          q.ID,
-		Description: utf8string.NewString(q.Body).Slice(0, maxLength),
+		Description: q.RenderedBody,
 	}
 
 	if q.User != nil {
