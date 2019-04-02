@@ -10,5 +10,5 @@ require (
 	github.com/otiai10/opengraph v1.0.0
 	github.com/pkg/errors v0.8.1
 	github.com/stretchr/testify v1.3.0 // indirect
-	golang.org/x/exp v0.0.0-20190316020145-860388717186
+	golang.org/x/net v0.0.0-20190311183353-d8887717615a // indirect
 )
