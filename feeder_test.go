@@ -1,12 +1,15 @@
 package feeder_test
 
 import (
-	"github.com/kr/pretty"
-	"github.com/naoki-kishi/feeder"
 	"reflect"
 	"strconv"
+	"strings"
 	"testing"
 	"time"
+	"unicode/utf8"
+
+	"github.com/kr/pretty"
+	"github.com/naoki-kishi/feeder"
 )
 
 type mockFetcher struct {
@@ -91,5 +94,42 @@ func TestCrawl(t *testing.T) {
 		t.Log(pretty.Println(diffs))
 		t.Error("Crawl does not match.")
 
+	}
+}
+
+func TestItems_limitDescription(t *testing.T) {
+	type fields struct {
+		Items []*feeder.Item
+	}
+	type args struct {
+		limit int
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+	}{
+		{
+			name: "longer than limit",
+			fields: fields{Items: []*feeder.Item{
+				{Description: strings.Repeat("a", 300)},
+			}},
+			args: args{limit: 200},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			items := &feeder.Items{
+				Items: tt.fields.Items,
+			}
+			feeder.ExportItemsLimitDescription(items, tt.args.limit)
+
+			for _, i := range items.Items {
+				got := utf8.RuneCountInString(i.Description)
+				if tt.args.limit < got {
+					t.Errorf("Exceed string length limit. limit=%d got=%d", tt.args.limit, got)
+				}
+			}
+		})
 	}
 }

@@ -2,6 +2,7 @@ package feeder
 
 import (
 	ogp "github.com/otiai10/opengraph"
+	"golang.org/x/exp/utf8string"
 	"log"
 	"sync"
 	"time"
@@ -86,9 +87,22 @@ func Crawl(fetchers ...Fetcher) *Items {
 	}
 	wg.Wait()
 
+	items.limitDescription(200)
+
 	fetchOGP(items)
 
 	return items
+}
+
+func (items *Items) limitDescription(limit int) {
+	for _, i := range items.Items {
+		length := utf8string.NewString(i.Description).RuneCount()
+		maxLength := limit
+		if length < limit {
+			maxLength = length
+		}
+		i.Description = utf8string.NewString(i.Description).Slice(0, maxLength)
+	}
 }
 
 func fetchOGP(items *Items) *Items {
