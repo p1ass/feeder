@@ -48,7 +48,7 @@ type Crawler interface {
 }
 ```
 
-This is a example of Qiita API(`GET /api/v2/users/:user_id/items`).
+This is an example of Qiita API(`GET /api/v2/users/:user_id/items`).
 
 [Qiita API v2 documentation - Qiita:Developer](https://qiita.com/api/v2/docs)
 ```go
