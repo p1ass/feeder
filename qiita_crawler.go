@@ -40,7 +40,7 @@ func NewQiitaFetcher(url string) Fetcher {
 func (fetcher *qiitaFetcher) Fetch() (*Items, error) {
 	resp, err := http.Get(fetcher.URL)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		return nil, errors.Wrap(err, "Failed to get response from qiita.")
 	}
 	defer resp.Body.Close()
