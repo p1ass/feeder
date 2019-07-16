@@ -1,6 +1,6 @@
-# naoki-kishi/feeder
+<img src="image/feeder_logo.png" style="width:400px">
 
-`naoki-kishi/feeder` is a RSS or JSON feeds generator from multiple RSS, Atom, Qiita, and so on
+feeder is a RSS or JSON feeds generator from multiple RSS, Atom, Qiita, and so on
 
 ## Getting started
 
