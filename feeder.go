@@ -1,14 +1,19 @@
 package feeder
 
 import (
-	ogp "github.com/otiai10/opengraph"
 	"log"
 	"sync"
 	"time"
+
+	ogp "github.com/otiai10/opengraph"
 )
 
-// Fetcher is ...
+// Deprecated: Fetcher is replaced by Crawler
 type Fetcher interface {
+	Fetch() (*Items, error)
+}
+
+type Crawler interface {
 	Fetch() (*Items, error)
 }
 
@@ -65,14 +70,16 @@ func (items *Items) Add(i *Items) {
 	items.Items = append(items.Items, i.Items...)
 }
 
-func Crawl(fetchers ...Fetcher) *Items {
+// Crawl is function that crawls all site using goroutine.
+// func Crawl(fetchers ...Fetcher) *Items is deprecated
+func Crawl(crawlers ...Crawler) *Items {
 	items := &Items{}
 	mutex := sync.Mutex{}
 	wg := sync.WaitGroup{}
 
-	for _, f := range fetchers {
+	for _, f := range crawlers {
 		wg.Add(1)
-		go func(f Fetcher) {
+		go func(f Crawler) {
 			i, err := f.Fetch()
 			if err != nil {
 				log.Fatal(err)

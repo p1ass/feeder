@@ -2,10 +2,11 @@ package feeder
 
 import (
 	"encoding/json"
-	"github.com/pkg/errors"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/pkg/errors"
 )
 
 type qiitaResponse struct {
@@ -26,7 +27,11 @@ type qiitaFetcher struct {
 	URL string
 }
 
-//NewQiitaFetcher is ...
+func NewQiitaCrawler(url string) Crawler {
+	return &qiitaFetcher{URL: url}
+}
+
+// Deprecated: Use NewAtomCrawler instead of NewQiitaFetcher
 func NewQiitaFetcher(url string) Fetcher {
 	return &qiitaFetcher{URL: url}
 }

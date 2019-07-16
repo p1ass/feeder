@@ -1,32 +1,31 @@
 package feeder_test
 
 import (
-	"github.com/kr/pretty"
-	"github.com/naoki-kishi/feeder"
 	"io/ioutil"
 	"os"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/kr/pretty"
+	"github.com/naoki-kishi/feeder"
 )
 
-func TestAtomFetch(t *testing.T) {
+func TestQiitaFetch(t *testing.T) {
 	// Set up mock server
-	xmlFile, err := os.Open("atom_test.xml")
+	jsonFile, err := os.Open("qiita_test.json")
 	if err != nil {
-		t.Fatal("Failed to open test atom feed file.")
+		t.Fatal("Failed to open test rss feed file.")
 	}
-	bytes, _ := ioutil.ReadAll(xmlFile)
+	bytes, _ := ioutil.ReadAll(jsonFile)
 	response := &feeder.Response{
-		Path:        "/feed",
-		ContentType: "application/xml",
+		Path:        "/qiita",
+		ContentType: "application/json",
 		Body:        string(bytes),
 	}
 	server := feeder.NewMockServer(response)
 	defer server.Close()
 
-	updatedString := "2019-01-02T00:00:00+09:00"
-	updated, _ := time.Parse(time.RFC3339, updatedString)
 	publishedString := "2019-01-01T00:00:00+09:00"
 	published, _ := time.Parse(time.RFC3339, publishedString)
 	expected := &feeder.Items{
@@ -34,26 +33,20 @@ func TestAtomFetch(t *testing.T) {
 			Title: "title",
 			Link: &feeder.Link{
 				Href: "http://example.com",
-				Rel:  "alternate",
+				Rel:  "",
 			},
 			Source: nil,
 			Author: &feeder.Author{
-				Name:  "name",
-				Email: "email@example.com",
+				Name: "name",
 			},
 			Description: "summary_content",
 			Id:          "id",
-			Updated:     &updated,
+			Updated:     nil,
 			Created:     &published,
-			Enclosure: &feeder.Enclosure{
-				Url:    "http://example.com/image.png",
-				Type:   "image/png",
-				Length: "0",
-			},
-			Content: "content",
+			Content:     "",
 		}}}
 
-	fetcher := feeder.NewAtomFetcher(server.URL + "/feed")
+	fetcher := feeder.NewQiitaCrawler(server.URL + "/qiita")
 	got, err := fetcher.Fetch()
 	if err != nil {
 		t.Fatal(err)

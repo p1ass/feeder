@@ -3,23 +3,28 @@ package feeder
 import (
 	"encoding/xml"
 	"fmt"
-	"github.com/naoki-kishi/feeds"
-	"github.com/pkg/errors"
 	"net/http"
 	"time"
+
+	"github.com/naoki-kishi/feeds"
+	"github.com/pkg/errors"
 )
 
-type atomFetcher struct {
+type atomCrawler struct {
 	URL string
 }
 
-//NewAtomFetcher is ...
+func NewAtomCrawler(url string) Crawler {
+	return &atomCrawler{URL: url}
+}
+
+// Deprecated: Use NewAtomCrawler instead of NewAtomFetcher
 func NewAtomFetcher(url string) Fetcher {
-	return &atomFetcher{URL: url}
+	return &atomCrawler{URL: url}
 }
 
 // Fetch is ...
-func (fetcher *atomFetcher) Fetch() (*Items, error) {
+func (fetcher *atomCrawler) Fetch() (*Items, error) {
 	resp, err := http.Get(fetcher.URL)
 	if err != nil {
 		return nil, errors.Wrap(err, "Failed to get response from rss.")

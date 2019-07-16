@@ -1,30 +1,33 @@
 package feeder_test
 
 import (
-	"github.com/kr/pretty"
-	"github.com/naoki-kishi/feeder"
 	"io/ioutil"
 	"os"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/kr/pretty"
+	"github.com/naoki-kishi/feeder"
 )
 
-func TestRSSFetch(t *testing.T) {
+func TestAtomFetch(t *testing.T) {
 	// Set up mock server
-	xmlFile, err := os.Open("rss_test.xml")
+	xmlFile, err := os.Open("atom_test.xml")
 	if err != nil {
-		t.Fatal("Failed to open test rss feed file.")
+		t.Fatal("Failed to open test atom feed file.")
 	}
 	bytes, _ := ioutil.ReadAll(xmlFile)
 	response := &feeder.Response{
-		Path:        "/rss",
+		Path:        "/feed",
 		ContentType: "application/xml",
 		Body:        string(bytes),
 	}
 	server := feeder.NewMockServer(response)
 	defer server.Close()
 
+	updatedString := "2019-01-02T00:00:00+09:00"
+	updated, _ := time.Parse(time.RFC3339, updatedString)
 	publishedString := "2019-01-01T00:00:00+09:00"
 	published, _ := time.Parse(time.RFC3339, publishedString)
 	expected := &feeder.Items{
@@ -32,25 +35,26 @@ func TestRSSFetch(t *testing.T) {
 			Title: "title",
 			Link: &feeder.Link{
 				Href: "http://example.com",
-				Rel:  "",
+				Rel:  "alternate",
 			},
 			Source: nil,
 			Author: &feeder.Author{
-				Name: "name",
+				Name:  "name",
+				Email: "email@example.com",
 			},
 			Description: "summary_content",
 			Id:          "id",
-			Updated:     nil,
+			Updated:     &updated,
 			Created:     &published,
 			Enclosure: &feeder.Enclosure{
 				Url:    "http://example.com/image.png",
 				Type:   "image/png",
 				Length: "0",
 			},
-			Content: "",
+			Content: "content",
 		}}}
 
-	fetcher := feeder.NewRSSFetcher(server.URL + "/rss")
+	fetcher := feeder.NewAtomCrawler(server.URL + "/feed")
 	got, err := fetcher.Fetch()
 	if err != nil {
 		t.Fatal(err)
