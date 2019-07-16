@@ -2,10 +2,11 @@ package feeder
 
 import (
 	"encoding/json"
-	"github.com/pkg/errors"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/pkg/errors"
 )
 
 type qiitaResponse struct {
@@ -26,7 +27,11 @@ type qiitaFetcher struct {
 	URL string
 }
 
-//NewQiitaFetcher is ...
+func NewQiitaCrawler(url string) Crawler {
+	return &qiitaFetcher{URL: url}
+}
+
+// Deprecated: Use NewAtomCrawler instead of NewQiitaFetcher
 func NewQiitaFetcher(url string) Fetcher {
 	return &qiitaFetcher{URL: url}
 }
@@ -35,7 +40,7 @@ func NewQiitaFetcher(url string) Fetcher {
 func (fetcher *qiitaFetcher) Fetch() (*Items, error) {
 	resp, err := http.Get(fetcher.URL)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		return nil, errors.Wrap(err, "Failed to get response from qiita.")
 	}
 	defer resp.Body.Close()

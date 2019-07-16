@@ -1,25 +1,26 @@
 package feeder_test
 
 import (
-	"github.com/kr/pretty"
-	"github.com/naoki-kishi/feeder"
 	"io/ioutil"
 	"os"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/kr/pretty"
+	"github.com/naoki-kishi/feeder"
 )
 
-func TestQiitaFetch(t *testing.T) {
+func TestRSSFetch(t *testing.T) {
 	// Set up mock server
-	jsonFile, err := os.Open("qiita_test.json")
+	xmlFile, err := os.Open("rss_test.xml")
 	if err != nil {
 		t.Fatal("Failed to open test rss feed file.")
 	}
-	bytes, _ := ioutil.ReadAll(jsonFile)
+	bytes, _ := ioutil.ReadAll(xmlFile)
 	response := &feeder.Response{
-		Path:        "/qiita",
-		ContentType: "application/json",
+		Path:        "/rss",
+		ContentType: "application/xml",
 		Body:        string(bytes),
 	}
 	server := feeder.NewMockServer(response)
@@ -42,10 +43,15 @@ func TestQiitaFetch(t *testing.T) {
 			Id:          "id",
 			Updated:     nil,
 			Created:     &published,
-			Content:     "",
+			Enclosure: &feeder.Enclosure{
+				Url:    "http://example.com/image.png",
+				Type:   "image/png",
+				Length: "0",
+			},
+			Content: "",
 		}}}
 
-	fetcher := feeder.NewQiitaFetcher(server.URL + "/qiita")
+	fetcher := feeder.NewRSSCrawler(server.URL + "/rss")
 	got, err := fetcher.Fetch()
 	if err != nil {
 		t.Fatal(err)
