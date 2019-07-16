@@ -1,6 +1,6 @@
 <img src="image/feeder_logo.png" style="width:400px">
 
-feeder is a RSS or JSON feeds generator from multiple RSS, Atom, Qiita, and so on
+`feeder` is the RSS, Atom and JSON feed generator from multiple RSS, Atom, and any entries you want.
 
 ## Getting started
 
@@ -14,11 +14,11 @@ go get -u github.com/naoki-kishi/feeder
 import "github.com/naoki-kishi/feeder"
 
 func fetch(){
-	rssFetcher := feeder.NewRSSFetcher("https://example.com/rss")
-	qiitaFetcher := feeder.NewQiitaFetcher("https://qiita.com/api/v2/users/plus_kyoto/items")
+	rssCrawler := feeder.NewRSSCrawler("https://example.com/rss")
+	qiitaCrawler := feeder.NewQiitaCrawler("https://qiita.com/api/v2/users/plus_kyoto/items")
 
-	// Fetch data using goroutine.
-	items := feeder.Crawl(rssFetcher, qiitaFetcher)
+	// Crawl data using goroutine.
+	items := feeder.Crawl(rssCrawler, qiitaCrawler)
 
 	feed := &feeder.Feed{
 		Title:       "My feeds",
@@ -40,10 +40,10 @@ func fetch(){
 
 ## Advanced usages
 
-### Implement original `Fetcher`
-You can create a original fetcher by implementing `feeder.Fetcher`.
+### Implement original `Crawler`
+You can create a original crawler by implementing `feeder.Crawler`.
 ```go
-type Fetcher interface {
+type Crawler interface {
 	Fetch() (*Items, error)
 }
 ```
@@ -66,21 +66,20 @@ type qiitaUser struct {
 	ID string `json:"id"`
 }
 
-type qiitaFetcher struct {
+type qiitaCrawler struct {
 	URL string
 }
 
-func (fetcher *qiitaFetcher) Fetch() (*feeder.Items, error) {
-	resp, err := http.Get(fetcher.URL)
+func (crawler *qiitaCrawler) Fetch() (*feeder.Items, error) {
+	resp, err := http.Get(crawler.URL)
 	if err != nil {
-		log.Fatal(err)
-		return nil, errors.Wrap(err, "Failed to get response from qiita.")
+		return nil, errors.Wrap(err, "failed to get response from qiita.")
 	}
 
 	var qiita []*qiitaResponse
 	err = json.NewDecoder(resp.Body).Decode(&qiita)
 	if err != nil {
-		return nil, errors.Wrap(err, "Failed to decode response body.")
+		return nil, errors.Wrap(err, "failed to decode response body.")
 	}
 
 	items := []*feeder.Item{}
