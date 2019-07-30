@@ -1,12 +1,13 @@
 package feeder_test
 
 import (
-	"github.com/kr/pretty"
-	"github.com/naoki-kishi/feeder"
 	"reflect"
 	"strconv"
 	"testing"
 	"time"
+
+	"github.com/kr/pretty"
+	"github.com/p1ass/feeder"
 )
 
 type mockFetcher struct {

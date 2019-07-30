@@ -6,12 +6,12 @@
 
 ### Install
 ```bash
-go get -u github.com/naoki-kishi/feeder
+go get -u github.com/p1ass/feeder
 ```
 
 ### Examples
 ```go
-import "github.com/naoki-kishi/feeder"
+import "github.com/p1ass/feeder"
 
 func fetch(){
 	rssCrawler := feeder.NewRSSCrawler("https://example.com/rss")
@@ -25,8 +25,8 @@ func fetch(){
 		Link:        &feeder.Link{Href: "https://example.com/feed"},
 		Description: "My feeds.",
 		Author:      &feeder.Author{
-			Name: "naoki-kishi",
-			Email: "naoki-kishi@example.com"},
+			Name: "p1ass",
+			Email: "p1ass@example.com"},
 		Created:     time.Now(),
 		Items:       items,
 	}
