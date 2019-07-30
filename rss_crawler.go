@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/naoki-kishi/feeds"
+	"github.com/p1ass/feeds"
 	"github.com/pkg/errors"
 )
 

@@ -1,8 +1,9 @@
 package feeder_test
 
 import (
-	"github.com/naoki-kishi/feeder"
 	"testing"
+
+	"github.com/p1ass/feeder"
 )
 
 func TestItemConvert(t *testing.T) {

@@ -7,8 +7,6 @@ github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORN
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0 h1:45sCR5RtlFHMR4UwH9sdQ5TC8v0qDQCHnXt+kaKSTVE=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
-github.com/naoki-kishi/feeds v1.1.1 h1:Z3T5OysMfAYHScWIcPd/O4a2mHq/Wktn5XPsyEZl3aA=
-github.com/naoki-kishi/feeds v1.1.1/go.mod h1:y1xnq4XHPsg1B5xwb2Fr6gY4bHL23wXmrjD2VR9LNQY=
 github.com/otiai10/curr v0.0.0-20150429015615-9b4961190c95 h1:+OLn68pqasWca0z5ryit9KGfp3sUsW4Lqg32iRMJyzs=
 github.com/otiai10/curr v0.0.0-20150429015615-9b4961190c95/go.mod h1:9qAhocn7zKJG+0mI8eUu6xqkFDYS2kb2saOteoSB3cE=
 github.com/otiai10/marmoset v0.4.0 h1:Hg59lQI7qQowBEdsAJ/+VDTEospTBzXX/A1Gsw4mlvA=
@@ -17,6 +15,8 @@ github.com/otiai10/mint v1.2.3 h1:PsrRBmrxR68kyNu6YlqYHbNlItc5vOkuS6LBEsNttVA=
 github.com/otiai10/mint v1.2.3/go.mod h1:YnfyPNhBvnY8bW4SGQHCs/aAFhkgySlMZbrF5U0bOVw=
 github.com/otiai10/opengraph v1.0.0 h1:Fal0Qx7mBWds0z2cxMMPfZh2Ld3mW61m5BBUTybajD0=
 github.com/otiai10/opengraph v1.0.0/go.mod h1:X/1XWvVWxb+8migvztlPAclxuxVCIRuLhf0xLnngZ78=
+github.com/p1ass/feeds v1.1.1 h1:ah6XlzYVT3RCie+KYeqOgoGvn1IepKYLjI8jzPNeMs8=
+github.com/p1ass/feeds v1.1.1/go.mod h1:FV21uIHg0+tWMbO9u0qzQmf1cwF5E+nO/ZkfAu1rCAY=
 github.com/pkg/errors v0.8.1 h1:iURUrRGxPUNPdy5/HRSm+Yj6okJ6UtLINN0Q9M4+h3I=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

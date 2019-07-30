@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/kr/pretty"
-	"github.com/naoki-kishi/feeder"
+	"github.com/p1ass/feeder"
 )
 
 func TestQiitaFetch(t *testing.T) {

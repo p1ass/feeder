@@ -1,6 +1,6 @@
 package feeder
 
-import "github.com/naoki-kishi/feeds"
+import "github.com/p1ass/feeds"
 
 func (f *Feed) ToRSS() (string, error) {
 	return f.convert().ToRss()
