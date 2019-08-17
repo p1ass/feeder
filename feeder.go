@@ -13,27 +13,33 @@ type Fetcher interface {
 	Fetch() (*Items, error)
 }
 
+// Crawler is interface for crawling
 type Crawler interface {
 	Fetch() (*Items, error)
 }
 
+// Link represents http link
 type Link struct {
 	Href, Rel, Type, Length string
 }
 
+// Author represents entry author
 type Author struct {
 	Name, Email string
 }
 
+// Image represents image
 type Image struct {
 	Url, Title, Link string
 	Width, Height    int
 }
 
+// Enclosure represents og link
 type Enclosure struct {
 	Url, Length, Type string
 }
 
+// Item represents a entry
 type Item struct {
 	Title       string
 	Link        *Link
@@ -48,10 +54,12 @@ type Item struct {
 	Content   string
 }
 
+// Items represents slice of item
 type Items struct {
 	Items []*Item
 }
 
+// Feed represents rss feed or atom feed
 type Feed struct {
 	Title       string
 	Link        *Link
@@ -66,6 +74,7 @@ type Feed struct {
 	Image       *Image
 }
 
+// Add adds item to Items
 func (items *Items) Add(i *Items) {
 	items.Items = append(items.Items, i.Items...)
 }

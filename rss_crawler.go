@@ -14,6 +14,7 @@ type rssCrawler struct {
 	URL string
 }
 
+// NewRSSCrawler returns RSSCrawler
 func NewRSSCrawler(url string) Crawler {
 	return &rssCrawler{URL: url}
 }
@@ -23,6 +24,7 @@ func NewRSSFetcher(url string) Fetcher {
 	return &rssCrawler{URL: url}
 }
 
+// Fetch fetches entries from rss feed
 func (fetcher *rssCrawler) Fetch() (*Items, error) {
 	resp, err := http.Get(fetcher.URL)
 	if err != nil {

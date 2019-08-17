@@ -23,7 +23,7 @@ func NewAtomFetcher(url string) Fetcher {
 	return &atomCrawler{URL: url}
 }
 
-// Fetch is ...
+// Fetch is fetch entry items from atom file
 func (fetcher *atomCrawler) Fetch() (*Items, error) {
 	resp, err := http.Get(fetcher.URL)
 	if err != nil {

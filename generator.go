@@ -2,14 +2,17 @@ package feeder
 
 import "github.com/p1ass/feeds"
 
+// ToRSS generates RSS feed
 func (f *Feed) ToRSS() (string, error) {
 	return f.convert().ToRss()
 }
 
+// ToAtom generates Atom feed
 func (f *Feed) ToAtom() (string, error) {
 	return f.convert().ToAtom()
 }
 
+// ToJSON generates JSON feed
 func (f *Feed) ToJSON() (string, error) {
 	return f.convert().ToJSON()
 }
