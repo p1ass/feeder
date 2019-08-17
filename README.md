@@ -14,11 +14,10 @@ go get -u github.com/p1ass/feeder
 import "github.com/p1ass/feeder"
 
 func crawl(){
-	rssCrawler := feeder.NewRSSCrawler("https://example.com/rss")
-	qiitaCrawler := feeder.NewQiitaCrawler("https://qiita.com/api/v2/users/plus_kyoto/items")
+	rss1 := feeder.NewRSSCrawler("https://example.com/rss1")
+	rss2 := feeder.NewRSSCrawler("https://example.com/rss2")
 
-	// Crawl data using goroutine.
-	items, err := feeder.Crawl(rssCrawler, qiitaCrawler)
+	items, err := feeder.Crawl(rss1, rss2)
 
 	feed := &feeder.Feed{
 		Title:       "My feeds",
@@ -44,7 +43,7 @@ func crawl(){
 You can create a original crawler by implementing `feeder.Crawler`.
 ```go
 type Crawler interface {
-	Fetch() (*Items, error)
+	Crawl() ([]*Item, error)
 }
 ```
 
@@ -70,7 +69,7 @@ type qiitaCrawler struct {
 	URL string
 }
 
-func (crawler *qiitaCrawler) Fetch() (*feeder.Items, error) {
+func (crawler *qiitaCrawler) Fetch() ([]*feeder.Item, error) {
 	resp, err := http.Get(crawler.URL)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get response from qiita.")
@@ -86,7 +85,7 @@ func (crawler *qiitaCrawler) Fetch() (*feeder.Items, error) {
 	for _, i := range qiita {
 		items = append(items, convertQiitaToItem(i))
 	}
-	return &feeder.Items{items}, nil
+	return items, nil
 }
 
 func convertQiitaToItem(q *qiitaResponse) *feeder.Item {
