@@ -14,13 +14,13 @@ type mockFetcher struct {
 	Id string
 }
 
-func (f *mockFetcher) Fetch() (*feeder.Items, error) {
+func (f *mockFetcher) Crawl() ([]*feeder.Item, error) {
 	sleepTime, _ := strconv.Atoi(f.Id)
 	time.Sleep(time.Second * time.Duration(sleepTime))
 
 	publishedString := "2019-01-01T00:00:00+09:00"
 	published, _ := time.Parse(time.RFC3339, publishedString)
-	return &feeder.Items{[]*feeder.Item{{
+	return []*feeder.Item{{
 		Title: "title",
 		Link: &feeder.Link{
 			Href: "http://ogp.me",
@@ -35,14 +35,14 @@ func (f *mockFetcher) Fetch() (*feeder.Items, error) {
 		Updated:     nil,
 		Created:     &published,
 		Content:     "",
-	}}}, nil
+	}}, nil
 }
 
 func TestCrawl(t *testing.T) {
 	publishedString := "2019-01-01T00:00:00+09:00"
 	published, _ := time.Parse(time.RFC3339, publishedString)
 
-	expected := &feeder.Items{[]*feeder.Item{{
+	expected := []*feeder.Item{{
 		Title: "title",
 		Link: &feeder.Link{
 			Href: "http://ogp.me",
@@ -56,12 +56,7 @@ func TestCrawl(t *testing.T) {
 		ID:          "1",
 		Updated:     nil,
 		Created:     &published,
-		Enclosure: &feeder.Enclosure{
-			URL:    "http://ogp.me/logo.png",
-			Type:   "image/png",
-			Length: "0",
-		},
-		Content: "",
+		Content:     "",
 	}, {
 		Title: "title",
 		Link: &feeder.Link{
@@ -76,21 +71,20 @@ func TestCrawl(t *testing.T) {
 		ID:          "2",
 		Updated:     nil,
 		Created:     &published,
-		Enclosure: &feeder.Enclosure{
-			URL:    "http://ogp.me/logo.png",
-			Type:   "image/png",
-			Length: "0",
-		}, Content: "",
-	}}}
+		Content:     "",
+	}}
 
-	fetcher1 := &mockFetcher{Id: "1"}
-	fetcher2 := &mockFetcher{Id: "2"}
-	items := feeder.Crawl(fetcher1, fetcher2)
+	crawler1 := &mockFetcher{Id: "1"}
+	crawler2 := &mockFetcher{Id: "2"}
+	items, err := feeder.Crawl(crawler1, crawler2)
+	if err != nil {
+		t.Errorf("Crawl() shoud return nil error error = %v", err)
+		return
+	}
 
-	if !reflect.DeepEqual(*expected, *items) {
-		diffs := pretty.Diff(*expected, *items)
+	if !reflect.DeepEqual(&expected, &items) {
+		diffs := pretty.Diff(expected, items)
 		t.Log(pretty.Println(diffs))
 		t.Error("Crawl does not match.")
-
 	}
 }
