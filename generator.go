@@ -34,7 +34,7 @@ func (a *Author) convert() *feeds.Author {
 }
 func (i *Image) convert() *feeds.Image {
 	return &feeds.Image{
-		i.Url,
+		i.URL,
 		i.Title,
 		i.Link,
 		i.Width,
@@ -44,7 +44,7 @@ func (i *Image) convert() *feeds.Image {
 
 func (e *Enclosure) convert() *feeds.Enclosure {
 	return &feeds.Enclosure{
-		e.Url,
+		e.URL,
 		e.Length,
 		e.Type,
 	}
@@ -54,7 +54,7 @@ func (i *Item) convert() *feeds.Item {
 	feedsItem := &feeds.Item{
 		Title:       i.Title,
 		Description: i.Description,
-		Id:          i.Id,
+		Id:          i.ID,
 		Content:     i.Content,
 	}
 

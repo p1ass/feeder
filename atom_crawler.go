@@ -63,7 +63,7 @@ func convertAtomEntryToItem(e *feeds.AtomEntry) (*Item, error) {
 	i := &Item{
 		Title:       e.Title,
 		Description: e.Summary.Content,
-		Id:          e.Id,
+		ID:          e.Id,
 		Created:     &p,
 		Updated:     &u,
 	}
@@ -86,7 +86,7 @@ func convertAtomEntryToItem(e *feeds.AtomEntry) (*Item, error) {
 	for _, link := range e.Links {
 		if link.Rel == "enclosure" {
 			i.Enclosure = &Enclosure{
-				Url:    link.Href,
+				URL:    link.Href,
 				Length: link.Length,
 				Type:   link.Type,
 			}

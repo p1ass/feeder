@@ -14,7 +14,7 @@ type rssCrawler struct {
 	URL string
 }
 
-// NewRSSCrawler returns RSSCrawler
+// NewRSSCrawler returns rSSCrawler
 func NewRSSCrawler(url string) Crawler {
 	return &rssCrawler{URL: url}
 }
@@ -61,7 +61,7 @@ func convertRssItemToItem(i *feeds.RssItem) (*Item, error) {
 		Title:       i.Title,
 		Link:        &Link{Href: i.Link},
 		Description: i.Description,
-		Id:          i.Guid,
+		ID:          i.Guid,
 		Created:     &t,
 	}
 
@@ -75,7 +75,7 @@ func convertRssItemToItem(i *feeds.RssItem) (*Item, error) {
 
 	if i.Enclosure != nil {
 		item.Enclosure = &Enclosure{
-			Url:    i.Enclosure.Url,
+			URL:    i.Enclosure.Url,
 			Length: i.Enclosure.Length,
 			Type:   i.Enclosure.Type}
 	}

@@ -40,11 +40,11 @@ func TestRSSFetch(t *testing.T) {
 				Name: "name",
 			},
 			Description: "summary_content",
-			Id:          "id",
+			ID:          "id",
 			Updated:     nil,
 			Created:     &published,
 			Enclosure: &feeder.Enclosure{
-				Url:    "http://example.com/image.png",
+				URL:    "http://example.com/image.png",
 				Type:   "image/png",
 				Length: "0",
 			},

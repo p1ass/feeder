@@ -43,11 +43,11 @@ func TestAtomFetch(t *testing.T) {
 				Email: "email@example.com",
 			},
 			Description: "summary_content",
-			Id:          "id",
+			ID:          "id",
 			Updated:     &updated,
 			Created:     &published,
 			Enclosure: &feeder.Enclosure{
-				Url:    "http://example.com/image.png",
+				URL:    "http://example.com/image.png",
 				Type:   "image/png",
 				Length: "0",
 			},

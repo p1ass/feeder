@@ -30,13 +30,13 @@ type Author struct {
 
 // Image represents image
 type Image struct {
-	Url, Title, Link string
+	URL, Title, Link string
 	Width, Height    int
 }
 
 // Enclosure represents og link
 type Enclosure struct {
-	Url, Length, Type string
+	URL, Length, Type string
 }
 
 // Item represents a entry
@@ -47,7 +47,7 @@ type Item struct {
 	Author      *Author
 	Description string
 
-	Id        string
+	ID        string
 	Updated   *time.Time
 	Created   *time.Time
 	Enclosure *Enclosure
@@ -114,7 +114,7 @@ func fetchOGP(items *Items) *Items {
 		wg.Add(1)
 		i := i
 		go func() {
-			if i.Enclosure == nil || i.Enclosure.Url == "" {
+			if i.Enclosure == nil || i.Enclosure.URL == "" {
 				og, err := ogp.Fetch(i.Link.Href)
 				if err != nil {
 					log.Printf("Failed to fetch ogp. %#v", err)
@@ -123,7 +123,7 @@ func fetchOGP(items *Items) *Items {
 				if len(og.Image) > 0 {
 					image := og.Image[0]
 					i.Enclosure = &Enclosure{}
-					i.Enclosure.Url = image.URL
+					i.Enclosure.URL = image.URL
 
 					if image.Type != "" {
 						i.Enclosure.Type = image.Type
