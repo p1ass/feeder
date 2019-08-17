@@ -19,14 +19,9 @@ func NewAtomCrawler(url string) Crawler {
 	return &atomCrawler{URL: url}
 }
 
-// Deprecated: Use NewAtomCrawler instead of NewAtomFetcher
-func NewAtomFetcher(url string) Fetcher {
-	return &atomCrawler{URL: url}
-}
-
-// Fetch is fetch entry items from atom file
-func (fetcher *atomCrawler) Fetch() (*Items, error) {
-	resp, err := http.Get(fetcher.URL)
+// Crawl is crawl entry items from atom file
+func (crawler *atomCrawler) Crawl() ([]*Item, error) {
+	resp, err := http.Get(crawler.URL)
 	if err != nil {
 		return nil, errors.Wrap(err, "Failed to get response from rss.")
 	}
@@ -47,7 +42,7 @@ func (fetcher *atomCrawler) Fetch() (*Items, error) {
 		}
 		items = append(items, item)
 	}
-	return &Items{items}, nil
+	return items, nil
 }
 
 func convertAtomEntryToItem(e *feeds.AtomEntry) (*Item, error) {

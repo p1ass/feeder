@@ -19,14 +19,9 @@ func NewRSSCrawler(url string) Crawler {
 	return &rssCrawler{URL: url}
 }
 
-// Deprecated: Use NewAtomCrawler instead of NewRSSFetcher
-func NewRSSFetcher(url string) Fetcher {
-	return &rssCrawler{URL: url}
-}
-
-// Fetch fetches entries from rss feed
-func (fetcher *rssCrawler) Fetch() (*Items, error) {
-	resp, err := http.Get(fetcher.URL)
+// Crawl fetches entries from rss feed
+func (crawler *rssCrawler) Crawl() ([]*Item, error) {
+	resp, err := http.Get(crawler.URL)
 	if err != nil {
 		log.Println(err)
 		return nil, errors.Wrap(err, "Failed to get response from rss.")
@@ -48,7 +43,7 @@ func (fetcher *rssCrawler) Fetch() (*Items, error) {
 		}
 		items = append(items, item)
 	}
-	return &Items{items}, nil
+	return items, nil
 }
 
 func convertRssItemToItem(i *feeds.RssItem) (*Item, error) {
