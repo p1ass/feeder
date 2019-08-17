@@ -14,17 +14,14 @@ type rssCrawler struct {
 	URL string
 }
 
+// NewRSSCrawler returns rSSCrawler
 func NewRSSCrawler(url string) Crawler {
 	return &rssCrawler{URL: url}
 }
 
-// Deprecated: Use NewAtomCrawler instead of NewRSSFetcher
-func NewRSSFetcher(url string) Fetcher {
-	return &rssCrawler{URL: url}
-}
-
-func (fetcher *rssCrawler) Fetch() (*Items, error) {
-	resp, err := http.Get(fetcher.URL)
+// Crawl fetches entries from rss feed
+func (crawler *rssCrawler) Crawl() ([]*Item, error) {
+	resp, err := http.Get(crawler.URL)
 	if err != nil {
 		log.Println(err)
 		return nil, errors.Wrap(err, "Failed to get response from rss.")
@@ -46,7 +43,7 @@ func (fetcher *rssCrawler) Fetch() (*Items, error) {
 		}
 		items = append(items, item)
 	}
-	return &Items{items}, nil
+	return items, nil
 }
 
 func convertRssItemToItem(i *feeds.RssItem) (*Item, error) {
@@ -59,7 +56,7 @@ func convertRssItemToItem(i *feeds.RssItem) (*Item, error) {
 		Title:       i.Title,
 		Link:        &Link{Href: i.Link},
 		Description: i.Description,
-		Id:          i.Guid,
+		ID:          i.Guid,
 		Created:     &t,
 	}
 
@@ -73,7 +70,7 @@ func convertRssItemToItem(i *feeds.RssItem) (*Item, error) {
 
 	if i.Enclosure != nil {
 		item.Enclosure = &Enclosure{
-			Url:    i.Enclosure.Url,
+			URL:    i.Enclosure.Url,
 			Length: i.Enclosure.Length,
 			Type:   i.Enclosure.Type}
 	}

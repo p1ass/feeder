@@ -14,18 +14,14 @@ type atomCrawler struct {
 	URL string
 }
 
+// NewAtomCrawler returns atomCrawler
 func NewAtomCrawler(url string) Crawler {
 	return &atomCrawler{URL: url}
 }
 
-// Deprecated: Use NewAtomCrawler instead of NewAtomFetcher
-func NewAtomFetcher(url string) Fetcher {
-	return &atomCrawler{URL: url}
-}
-
-// Fetch is ...
-func (fetcher *atomCrawler) Fetch() (*Items, error) {
-	resp, err := http.Get(fetcher.URL)
+// Crawl is crawl entry items from atom file
+func (crawler *atomCrawler) Crawl() ([]*Item, error) {
+	resp, err := http.Get(crawler.URL)
 	if err != nil {
 		return nil, errors.Wrap(err, "Failed to get response from rss.")
 	}
@@ -46,7 +42,7 @@ func (fetcher *atomCrawler) Fetch() (*Items, error) {
 		}
 		items = append(items, item)
 	}
-	return &Items{items}, nil
+	return items, nil
 }
 
 func convertAtomEntryToItem(e *feeds.AtomEntry) (*Item, error) {
@@ -62,7 +58,7 @@ func convertAtomEntryToItem(e *feeds.AtomEntry) (*Item, error) {
 	i := &Item{
 		Title:       e.Title,
 		Description: e.Summary.Content,
-		Id:          e.Id,
+		ID:          e.Id,
 		Created:     &p,
 		Updated:     &u,
 	}
@@ -85,7 +81,7 @@ func convertAtomEntryToItem(e *feeds.AtomEntry) (*Item, error) {
 	for _, link := range e.Links {
 		if link.Rel == "enclosure" {
 			i.Enclosure = &Enclosure{
-				Url:    link.Href,
+				URL:    link.Href,
 				Length: link.Length,
 				Type:   link.Type,
 			}

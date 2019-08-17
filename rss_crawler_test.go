@@ -28,37 +28,36 @@ func TestRSSFetch(t *testing.T) {
 
 	publishedString := "2019-01-01T00:00:00+09:00"
 	published, _ := time.Parse(time.RFC3339, publishedString)
-	expected := &feeder.Items{
-		[]*feeder.Item{{
-			Title: "title",
-			Link: &feeder.Link{
-				Href: "http://example.com",
-				Rel:  "",
-			},
-			Source: nil,
-			Author: &feeder.Author{
-				Name: "name",
-			},
-			Description: "summary_content",
-			Id:          "id",
-			Updated:     nil,
-			Created:     &published,
-			Enclosure: &feeder.Enclosure{
-				Url:    "http://example.com/image.png",
-				Type:   "image/png",
-				Length: "0",
-			},
-			Content: "",
-		}}}
+	expected := []*feeder.Item{{
+		Title: "title",
+		Link: &feeder.Link{
+			Href: "http://example.com",
+			Rel:  "",
+		},
+		Source: nil,
+		Author: &feeder.Author{
+			Name: "name",
+		},
+		Description: "summary_content",
+		ID:          "id",
+		Updated:     nil,
+		Created:     &published,
+		Enclosure: &feeder.Enclosure{
+			URL:    "http://example.com/image.png",
+			Type:   "image/png",
+			Length: "0",
+		},
+		Content: "",
+	}}
 
-	fetcher := feeder.NewRSSCrawler(server.URL + "/rss")
-	got, err := fetcher.Fetch()
+	crawler := feeder.NewRSSCrawler(server.URL + "/rss")
+	got, err := crawler.Crawl()
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if !reflect.DeepEqual(*expected, *got) {
-		diffs := pretty.Diff(*expected, *got)
+	if !reflect.DeepEqual(expected, got) {
+		diffs := pretty.Diff(expected, got)
 		t.Log(pretty.Println(diffs))
 		t.Error("Failed to convert AtomEntry to Item.")
 

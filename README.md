@@ -13,12 +13,12 @@ go get -u github.com/p1ass/feeder
 ```go
 import "github.com/p1ass/feeder"
 
-func fetch(){
+func crawl(){
 	rssCrawler := feeder.NewRSSCrawler("https://example.com/rss")
 	qiitaCrawler := feeder.NewQiitaCrawler("https://qiita.com/api/v2/users/plus_kyoto/items")
 
 	// Crawl data using goroutine.
-	items := feeder.Crawl(rssCrawler, qiitaCrawler)
+	items, err := feeder.Crawl(rssCrawler, qiitaCrawler)
 
 	feed := &feeder.Feed{
 		Title:       "My feeds",
@@ -90,18 +90,13 @@ func (crawler *qiitaCrawler) Fetch() (*feeder.Items, error) {
 }
 
 func convertQiitaToItem(q *qiitaResponse) *feeder.Item {
-	length := utf8string.NewString(q.Body).RuneCount()
-	maxLength := 200
-	if length < 200 {
-		maxLength = length
-	}
 
 	i := &feeder.Item{
 		Title:       q.Title,
 		Link:        &feeder.Link{Href: q.URL},
 		Created:     q.CreatedAt,
 		Id:          q.ID,
-		Description: utf8string.NewString(q.Body).Slice(0, maxLength),
+		Description: q.Body,
 	}
 
 	if q.User != nil {

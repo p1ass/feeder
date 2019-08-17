@@ -2,14 +2,17 @@ package feeder
 
 import "github.com/p1ass/feeds"
 
+// ToRSS generates RSS feed
 func (f *Feed) ToRSS() (string, error) {
 	return f.convert().ToRss()
 }
 
+// ToAtom generates Atom feed
 func (f *Feed) ToAtom() (string, error) {
 	return f.convert().ToAtom()
 }
 
+// ToJSON generates JSON feed
 func (f *Feed) ToJSON() (string, error) {
 	return f.convert().ToJSON()
 }
@@ -31,7 +34,7 @@ func (a *Author) convert() *feeds.Author {
 }
 func (i *Image) convert() *feeds.Image {
 	return &feeds.Image{
-		i.Url,
+		i.URL,
 		i.Title,
 		i.Link,
 		i.Width,
@@ -41,7 +44,7 @@ func (i *Image) convert() *feeds.Image {
 
 func (e *Enclosure) convert() *feeds.Enclosure {
 	return &feeds.Enclosure{
-		e.Url,
+		e.URL,
 		e.Length,
 		e.Type,
 	}
@@ -51,7 +54,7 @@ func (i *Item) convert() *feeds.Item {
 	feedsItem := &feeds.Item{
 		Title:       i.Title,
 		Description: i.Description,
-		Id:          i.Id,
+		Id:          i.ID,
 		Content:     i.Content,
 	}
 
@@ -80,10 +83,10 @@ func (i *Item) convert() *feeds.Item {
 	return feedsItem
 }
 
-func (items *Items) convert() []*feeds.Item {
+func convert(items []*Item) []*feeds.Item {
 	convertedItems := []*feeds.Item{}
 
-	for _, i := range items.Items {
+	for _, i := range items {
 		convertedItems = append(convertedItems, i.convert())
 	}
 	return convertedItems
@@ -97,7 +100,7 @@ func (f *Feed) convert() *feeds.Feed {
 		Created:     f.Created,
 		Id:          f.Id,
 		Subtitle:    f.Subtitle,
-		Items:       f.Items.convert(),
+		Items:       convert(f.Items),
 		Copyright:   f.Copyright,
 	}
 

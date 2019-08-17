@@ -1,39 +1,42 @@
 package feeder
 
 import (
-	"log"
 	"sync"
 	"time"
 
+	"github.com/pkg/errors"
+
 	ogp "github.com/otiai10/opengraph"
+	"golang.org/x/sync/errgroup"
 )
 
-// Deprecated: Fetcher is replaced by Crawler
-type Fetcher interface {
-	Fetch() (*Items, error)
-}
-
+// Crawler is interface for crawling
 type Crawler interface {
-	Fetch() (*Items, error)
+	Crawl() ([]*Item, error)
 }
 
+// Link represents http link
 type Link struct {
 	Href, Rel, Type, Length string
 }
 
+// Author represents entry author
 type Author struct {
 	Name, Email string
 }
 
+// Image represents image
 type Image struct {
-	Url, Title, Link string
+	URL, Title, Link string
 	Width, Height    int
 }
 
+// Enclosure represents og link
 type Enclosure struct {
-	Url, Length, Type string
+	URL, Length, Type string
 }
 
+// Item represents a entry
 type Item struct {
 	Title       string
 	Link        *Link
@@ -41,17 +44,14 @@ type Item struct {
 	Author      *Author
 	Description string
 
-	Id        string
+	ID        string
 	Updated   *time.Time
 	Created   *time.Time
 	Enclosure *Enclosure
 	Content   string
 }
 
-type Items struct {
-	Items []*Item
-}
-
+// Feed represents rss feed or atom feed
 type Feed struct {
 	Title       string
 	Link        *Link
@@ -61,60 +61,60 @@ type Feed struct {
 	Created     time.Time
 	Id          string
 	Subtitle    string
-	Items       Items
+	Items       []*Item
 	Copyright   string
 	Image       *Image
 }
 
-func (items *Items) Add(i *Items) {
-	items.Items = append(items.Items, i.Items...)
-}
-
 // Crawl is function that crawls all site using goroutine.
-// func Crawl(fetchers ...Fetcher) *Items is deprecated
-func Crawl(crawlers ...Crawler) *Items {
-	items := &Items{}
+// func Crawl(crawlers ...Fetcher) *Items is deprecated
+func Crawl(crawlers ...Crawler) ([]*Item, error) {
+	items := []*Item{}
 	mutex := sync.Mutex{}
-	wg := sync.WaitGroup{}
 
+	eg := errgroup.Group{}
 	for _, f := range crawlers {
-		wg.Add(1)
-		go func(f Crawler) {
-			i, err := f.Fetch()
+		f := f
+		eg.Go(func() error {
+			i, err := f.Crawl()
 			if err != nil {
-				log.Fatal(err)
+				return err
 			} else {
 				mutex.Lock()
-				items.Add(i)
+				items = append(items, i...)
 				mutex.Unlock()
 			}
-			wg.Done()
-		}(f)
+			return nil
+		})
 	}
-	wg.Wait()
+	if err := eg.Wait(); err != nil {
+		return nil, errors.Wrap(err, "failed to crawl items")
+	}
 
-	fetchOGP(items)
+	items, err := fetchOGP(items)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to fetch ogp")
+	}
 
-	return items
+	return items, nil
 }
 
-func fetchOGP(items *Items) *Items {
-	wg := sync.WaitGroup{}
+func fetchOGP(items []*Item) ([]*Item, error) {
+	eg := errgroup.Group{}
 
-	for _, i := range items.Items {
-		wg.Add(1)
+	for _, i := range items {
 		i := i
-		go func() {
-			if i.Enclosure == nil || i.Enclosure.Url == "" {
+		eg.Go(func() error {
+			if i.Enclosure == nil || i.Enclosure.URL == "" {
 				og, err := ogp.Fetch(i.Link.Href)
 				if err != nil {
-					log.Printf("Failed to fetch ogp. %#v", err)
+					return err
 				}
 
 				if len(og.Image) > 0 {
 					image := og.Image[0]
 					i.Enclosure = &Enclosure{}
-					i.Enclosure.Url = image.URL
+					i.Enclosure.URL = image.URL
 
 					if image.Type != "" {
 						i.Enclosure.Type = image.Type
@@ -123,12 +123,10 @@ func fetchOGP(items *Items) *Items {
 					}
 					i.Enclosure.Length = "0"
 				}
-
 			}
-			wg.Done()
-		}()
+			return nil
+		})
 	}
-	wg.Wait()
 
-	return items
+	return items, nil
 }
