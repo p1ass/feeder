@@ -14,6 +14,7 @@ type atomCrawler struct {
 	URL string
 }
 
+// NewAtomCrawler returns atomCrawler
 func NewAtomCrawler(url string) Crawler {
 	return &atomCrawler{URL: url}
 }
