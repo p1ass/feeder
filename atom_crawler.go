@@ -54,10 +54,13 @@ func convertAtomEntryToItem(e *feeds.AtomEntry) (*Item, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, fmt.Sprintf("Failed to parse updated time. updated=%v", e.Updated))
 	}
-
+	var description string
+	if e.Summary != nil{
+		description = e.Summary.Content
+	}
 	i := &Item{
 		Title:       e.Title,
-		Description: e.Summary.Content,
+		Description: description,
 		ID:          e.Id,
 		Created:     &p,
 		Updated:     &u,
