@@ -2,7 +2,7 @@ module github.com/p1ass/feeder
 
 require (
 	bou.ke/monkey v1.0.1 // indirect
-	github.com/kr/pretty v0.1.0
+	github.com/kr/pretty v0.2.0
 	github.com/otiai10/curr v0.0.0-20150429015615-9b4961190c95 // indirect
 	github.com/otiai10/marmoset v0.4.0 // indirect
 	github.com/otiai10/mint v1.2.3 // indirect
