@@ -11,7 +11,12 @@ go get -u github.com/p1ass/feeder
 
 ### Examples
 ```go
-import "github.com/p1ass/feeder"
+package main
+
+import (
+	"github.com/p1ass/feeder"
+	"time"
+)
 
 func crawl(){
 	rss1 := feeder.NewRSSCrawler("https://example.com/rss1")
@@ -30,9 +35,14 @@ func crawl(){
 		Items:       items,
 	}
 
-	json, err := feed.ToJSON() // json is a `string`
-	rss, err := feed.ToRSS() // rss is a `string`
-	atom, err := feed.ToAtom() // atom is a `string`
+	json, err := feed.ToJSON() // json is  string
+	rss, err := feed.ToRSS() // rss is string
+	atom, err := feed.ToAtom() // atom is string
+
+	jsonReader, err := feed.ToJSONReader() // jsonReader is a io.Reader
+	rssReader, err := feed.ToRSSReader() // jsonReader is a io.Reader
+	atomReader, err := feed.ToAtomReader() // jsonReader is a io.Reader
+
 }
 
 ```

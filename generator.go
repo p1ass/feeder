@@ -1,10 +1,24 @@
 package feeder
 
-import "github.com/p1ass/feeds"
+import (
+	"io"
+	"strings"
+
+	"github.com/p1ass/feeds"
+)
 
 // ToRSS generates RSS feed
 func (f *Feed) ToRSS() (string, error) {
 	return f.convert().ToRss()
+}
+
+// ToRSSReader generates RSS feed and return io.Reader.
+func (f *Feed) ToRSSReader() (io.Reader, error) {
+	rss, err := f.convert().ToRss()
+	if err != nil {
+		return nil, err
+	}
+	return strings.NewReader(rss), nil
 }
 
 // ToAtom generates Atom feed
@@ -12,9 +26,27 @@ func (f *Feed) ToAtom() (string, error) {
 	return f.convert().ToAtom()
 }
 
+// ToAtomReader generates Atom feed and return io.Reader.
+func (f *Feed) ToAtomReader() (io.Reader, error) {
+	atom, err := f.convert().ToAtom()
+	if err != nil {
+		return nil, err
+	}
+	return strings.NewReader(atom), nil
+}
+
 // ToJSON generates JSON feed
 func (f *Feed) ToJSON() (string, error) {
 	return f.convert().ToJSON()
+}
+
+// ToJSONReader generates JSON feed and return io.Reader.
+func (f *Feed) ToJSONReader() (io.Reader, error) {
+	json, err := f.convert().ToJSON()
+	if err != nil {
+		return nil, err
+	}
+	return strings.NewReader(json), nil
 }
 
 func (l *Link) convert() *feeds.Link {
