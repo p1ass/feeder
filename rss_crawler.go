@@ -47,7 +47,7 @@ func (crawler *rssCrawler) Crawl() ([]*Item, error) {
 }
 
 func convertRssItemToItem(i *feeds.RssItem) (*Item, error) {
-	t, err := time.Parse("Mon, 2 Jan 2006 15:04:05 -0700", i.PubDate)
+	t, err := time.Parse(time.RFC1123, i.PubDate)
 	if err != nil {
 		return nil, errors.Wrap(err, "Parse Error")
 	}
