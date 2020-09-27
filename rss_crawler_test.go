@@ -48,6 +48,26 @@ func TestRSSFetch(t *testing.T) {
 			Length: "0",
 		},
 		Content: "",
+	}, {
+		Title: "title2",
+		Link: &feeder.Link{
+			Href: "http://example.com",
+			Rel:  "",
+		},
+		Source: nil,
+		Author: &feeder.Author{
+			Name: "name",
+		},
+		Description: "summary_content",
+		ID:          "id",
+		Updated:     nil,
+		Created:     &published,
+		Enclosure: &feeder.Enclosure{
+			URL:    "http://example.com/image.png",
+			Type:   "image/png",
+			Length: "0",
+		},
+		Content: "",
 	}}
 
 	crawler := feeder.NewRSSCrawler(server.URL + "/rss")

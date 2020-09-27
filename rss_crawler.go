@@ -47,11 +47,18 @@ func (crawler *rssCrawler) Crawl() ([]*Item, error) {
 }
 
 func convertRssItemToItem(i *feeds.RssItem) (*Item, error) {
-	t, err := time.Parse(time.RFC1123, i.PubDate)
+	layouts := []string{time.RFC1123, time.RFC1123Z}
+	var t time.Time
+	var err error
+	for _, layout := range layouts {
+		t, err = time.Parse(layout, i.PubDate)
+		if err == nil {
+			break
+		}
+	}
 	if err != nil {
 		return nil, errors.Wrap(err, "Parse Error")
 	}
-
 	item := &Item{
 		Title:       i.Title,
 		Link:        &Link{Href: i.Link},
