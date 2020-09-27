@@ -59,7 +59,7 @@ func TestRSSFetch(t *testing.T) {
 			Name: "name",
 		},
 		Description: "summary_content",
-		ID:          "id",
+		ID:          "id2",
 		Updated:     nil,
 		Created:     &published,
 		Enclosure: &feeder.Enclosure{
