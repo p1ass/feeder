@@ -2,6 +2,7 @@ package feeder
 
 import (
 	"encoding/xml"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -59,6 +60,7 @@ func convertRssItemToItem(i *feeds.RssItem) (*Item, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "Parse Error")
 	}
+	fmt.Println(t)
 	item := &Item{
 		Title:       i.Title,
 		Link:        &Link{Href: i.Link},
