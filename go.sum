@@ -17,6 +17,7 @@ github.com/otiai10/opengraph v1.1.1 h1:zaHbzhegXGqxVpiI7xlQQ0vKBWvHJbagnUjDC40sF
 github.com/otiai10/opengraph v1.1.1/go.mod h1:ZMbPcfiSRSsg3+yrWZCXrgYL6kEK4KpH4GG1iyIvEXs=
 github.com/otiai10/opengraph v1.1.2 h1:ajv2DTAh62p6wv1bXxnje+9K/AATJROtjnmk6Ml7Ro8=
 github.com/otiai10/opengraph v1.1.2/go.mod h1:ZMbPcfiSRSsg3+yrWZCXrgYL6kEK4KpH4GG1iyIvEXs=
+github.com/otiai10/opengraph v1.1.3/go.mod h1:ZMbPcfiSRSsg3+yrWZCXrgYL6kEK4KpH4GG1iyIvEXs=
 github.com/p1ass/feeds v1.1.1 h1:ah6XlzYVT3RCie+KYeqOgoGvn1IepKYLjI8jzPNeMs8=
 github.com/p1ass/feeds v1.1.1/go.mod h1:FV21uIHg0+tWMbO9u0qzQmf1cwF5E+nO/ZkfAu1rCAY=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
