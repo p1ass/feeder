@@ -29,7 +29,28 @@ func TestRSSFetch(t *testing.T) {
 	publishedString := "2019-01-01T00:00:00+09:00"
 	published, _ := time.Parse(time.RFC3339, publishedString)
 	expected := []*feeder.Item{{
-		Title: "title",
+		Title: "title RFC1123Z",
+		Link: &feeder.Link{
+			Href: "http://example.com",
+			Rel:  "",
+		},
+		Source: nil,
+		Author: &feeder.Author{
+			Name: "name",
+		},
+		Description: "summary_content",
+		ID:          "id",
+		Updated:     nil,
+		Created:     &published,
+		Enclosure: &feeder.Enclosure{
+			URL:    "http://example.com/image.png",
+			Type:   "image/png",
+			Length: "0",
+		},
+		Content: "",
+	},
+	{
+		Title: "title RFC1123",
 		Link: &feeder.Link{
 			Href: "http://example.com",
 			Rel:  "",
