@@ -6,6 +6,7 @@ executors:
             - image: circleci/golang:1.11.6
               environment:
                   GO111MODULE: 'on'
+                  TZ: Asia/Tokyo
 
 commands:
     restore_module:
