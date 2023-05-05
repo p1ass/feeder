@@ -7,5 +7,5 @@ require (
 	github.com/otiai10/opengraph v1.1.3
 	github.com/p1ass/feeds v1.1.1
 	github.com/pkg/errors v0.9.1
-	golang.org/x/sync v0.0.0-20190423024810-112230192c58
+	golang.org/x/sync v0.2.0
 )
